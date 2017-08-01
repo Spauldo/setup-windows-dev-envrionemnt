@@ -1,0 +1,39 @@
+* setup-windows-dev-environment
+
+This elisp library contains a function to read all the environment variables set by all configurations of all Visual C++ installations on a Windows machine.  It then creates a new library named ~windows-dev-environment.el~ that contains one function for each of the configurations found.  These functions set up all the environment variables set by the ~vcvarsall.bat~ scripts.
+
+** Usage
+
+Remember, this library generates /another library/.  You only use this library whenever you want to recreate the generated library.
+
+To generate a new library, start Emacs and then ~M-x load-file~ and load the file ~environment-vars.el~.  Then run ~M-x jds/create-library~.  A new file will be created in your current directory named ~windows-dev-environment.el~.  This is the generated library that contains the functions to set the VC++ environment variables.
+
+The generated library should be placed in your ~load-path~ and then included in your .emacs or init.el as follows:
+
+#+BEGIN_SRC emacs-lisp
+
+(require 'windows-dev-environment)
+(setup-ms-dev-environment-14-0-x86)
+
+#+END_SRC
+
+Replace the function call with the function for the appropriate environment.  In the function above, "14-0" is the version of Visual Studio (14.0) and "x86" is the configuration.  For more information on configurations, see the relevant Microsoft documentation for ~vcvarsall.bat~.
+
+The generated functions are all interactive, so they can be called via ~M-x~ if you prefer.
+
+** Notes
+
+The generated library only sets environment variables.  It does not do any other setup for working with Visual C++.
+
+None of this should be required if you are using MinGW or a non-VC++ compiler.
+
+There is no function to restore the original environment.  If you need to go back to the original environment, you must restart Emacs.
+
+Even though I've written it so that it should (theoretically) work with all versions of Visual Studio that use ~vcvarsall.bat~ to set up the environment, I've only actually tested it on Visual Studio 2015.  Open an issue if it doesn't work on other versions and I'll see what I can do.  I don't program much in Windows and my Visual Studio-fu isn't very good.
+
+** License
+
+The library provided here uses the ISC license, which is similar to the BSD and MIT licenses.  See LICENSE for details.  It is GPL compatible.
+
+The generated library is public domain where such things exist, and Creative Commons 0 (CC0) where public domain isn't applicable.
+
